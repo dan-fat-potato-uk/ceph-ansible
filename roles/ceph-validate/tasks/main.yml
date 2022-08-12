@@ -187,7 +187,7 @@
 - block:
     - name: fail if [grafana-server] group doesn't exist
       fail:
-        msg: "you must add a {{grafana-server}} group and add at least one node."
+        msg: "you must add a {{grafana_server_group_name}} group and add at least one node."
       when: groups[grafana_server_group_name] is undefined
 
     - name: fail when [grafana-server] doesn't contain at least one node.

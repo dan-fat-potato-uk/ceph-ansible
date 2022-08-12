@@ -34,7 +34,7 @@
   block:
     - name: validate lvm osd scenario
       fail:
-        msg: 'devices or lvm_volumes must be defined for lvm osd scenario'
+        msg: "devices or lvm_volumes must be defined for lvm osd scenario"
       when:
         - not osd_auto_discovery | default(false) | bool
         - devices is undefined
@@ -42,25 +42,25 @@
 
     - name: validate filestore lvm osd scenario
       fail:
-        msg: 'data and journal keys must be defined in lvm_volumes'
+        msg: "data and journal keys must be defined in lvm_volumes"
       when:
         - osd_objectstore == 'filestore'
         - not osd_auto_discovery | default(false) | bool
         - lvm_volumes is defined
         - lvm_volumes | length > 0
         - item.data is undefined or item.journal is undefined
-      with_items: '{{ lvm_volumes }}'
+      with_items: "{{ lvm_volumes }}"
 
     - name: validate bluestore lvm osd scenario
       fail:
-        msg: 'data key must be defined in lvm_volumes'
+        msg: "data key must be defined in lvm_volumes"
       when:
         - osd_objectstore == 'bluestore'
         - not osd_auto_discovery | default(false) | bool
         - lvm_volumes is defined
         - lvm_volumes | length > 0
         - item.data is undefined
-      with_items: '{{ lvm_volumes }}'
+      with_items: "{{ lvm_volumes }}"
 
 - name: debian based systems tasks
   when: ansible_facts['os_family'] == 'Debian'
@@ -90,8 +90,9 @@
 
     - name: Check ceph_repository definition on SUSE/openSUSE Leap
       fail:
-        msg: "Unsupported installation method origin:{{ ceph_origin }} repo:{{ ceph_repository }}'
-                  only valid combination is ceph_origin == 'repository' and ceph_repository == 'obs'"
+        msg:
+          "Unsupported installation method origin:{{ ceph_origin }} repo:{{ ceph_repository }}'
+          only valid combination is ceph_origin == 'repository' and ceph_repository == 'obs'"
       when:
         - ceph_origin == 'repository'
         - ceph_repository != 'obs'
@@ -186,7 +187,7 @@
 - block:
     - name: fail if [grafana-server] group doesn't exist
       fail:
-        msg: "you must add a [grafana-server] group and add at least one node."
+        msg: "you must add a {{grafana-server}} group and add at least one node."
       when: groups[grafana_server_group_name] is undefined
 
     - name: fail when [grafana-server] doesn't contain at least one node.
@@ -204,7 +205,7 @@
 
 - name: validate container registry credentials
   fail:
-    msg: 'ceph_docker_registry_username and/or ceph_docker_registry_password variables need to be set'
+    msg: "ceph_docker_registry_username and/or ceph_docker_registry_password variables need to be set"
   when:
     - ceph_docker_registry_auth | bool
     - (ceph_docker_registry_username is not defined or ceph_docker_registry_password is not defined) or
@@ -212,15 +213,15 @@
 
 - name: validate container service and container package
   fail:
-    msg: 'both container_package_name and container_service_name should be defined'
+    msg: "both container_package_name and container_service_name should be defined"
   when:
     - (container_package_name is undefined and container_service_name is defined) or
       (container_package_name is defined and container_service_name is undefined)
 
 - name: validate openstack_keys key format
   fail:
-    msg: '{{ item.name }} key format invalid'
-  with_items: '{{ openstack_keys }}'
+    msg: "{{ item.name }} key format invalid"
+  with_items: "{{ openstack_keys }}"
   when:
     - osd_group_name in group_names
     - openstack_keys is defined
@@ -230,8 +231,8 @@
 
 - name: validate clients keys key format
   fail:
-    msg: '{{ item.name }} key format invalid'
-  with_items: '{{ keys }}'
+    msg: "{{ item.name }} key format invalid"
+  with_items: "{{ keys }}"
   when:
     - client_group_name in group_names
     - keys is defined
@@ -241,8 +242,8 @@
 
 - name: validate openstack_keys caps
   fail:
-    msg: '{{ item.name }} key has no caps defined'
-  with_items: '{{ openstack_keys }}'
+    msg: "{{ item.name }} key has no caps defined"
+  with_items: "{{ openstack_keys }}"
   when:
     - osd_group_name in group_names
     - openstack_keys is defined
@@ -251,8 +252,8 @@
 
 - name: validate clients keys caps
   fail:
-    msg: '{{ item.name }} key has no caps defined'
-  with_items: '{{ keys }}'
+    msg: "{{ item.name }} key has no caps defined"
+  with_items: "{{ keys }}"
   when:
     - client_group_name in group_names
     - keys is defined
